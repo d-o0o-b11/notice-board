@@ -8,8 +8,8 @@
 }
 
 .form .input-box {
-  display: flex;
-  justify-content: center;
+  /*display: flex;*/
+  /*justify-content: center;*/
   align-items: center;
   border-bottom: 6px double lightsalmon;
 }
@@ -21,10 +21,13 @@
   border: 1px solid black; /*me*/
   font-size: 3vh;
   color: darkslategray;
-  font-family: "Courier New", Courier, monospace;
-  width: 100%;
+  /*font-family: "Courier New", Courier, monospace;*/
+  font-family: "Jua", Georgia, "Times New Roman",
+    serif /*rtl:Amiri, Georgia, "Times New Roman", serif*/;
+  width: 80%; /*100%*/
   /*padding: 20px;*/
   padding: 10px; /*me*/
+  margin-left: 10px; /*me*/
   font-weight: bold;
 }
 
@@ -56,7 +59,7 @@
 }
 
 .form .textarea::-webkit-scrollbar-thumb {
-  background-color: rgb(149, 212, 209);
+  background-color: #74b243; /*me*/
 }
 
 .form .textarea::-webkit-scrollbar-track {
@@ -91,9 +94,7 @@
   border-color: lightgray;
 }
 
-.h1,
-.h2,
-.h3,
-.h4 {
-  font-family: "Courier New", Courier, monospace;
+h3 {
+  margin-left: 20px;
+  font-family: "Jua", Georgia, "Times New Roman";
 }

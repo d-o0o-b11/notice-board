@@ -44,7 +44,7 @@ const Write = memo(({ id, dispatch, history }) => {
   return (
     <div className="form">
       <div className="input-box">
-        <h3>제목: <input
+        <h3>제 목: <input
           ref={inputTitle}
           placeholder="title"
           name="title"

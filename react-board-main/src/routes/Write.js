@@ -1,8 +1,9 @@
-import React, { useRef, useEffect, memo } from 'react';
+import React, { useRef, useEffect, memo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useInputs from '../hooks/useInputs';
 import { ADD_ITEM, CHANGE_MENU } from '../reducers/boardReducer';
 import './form.css';
+import styled from 'styled-components'
 
 function formatDate(date) {
   const year = date.getFullYear();
@@ -17,6 +18,8 @@ const Write = memo(({ id, dispatch, history }) => {
   const { title, content } = state;
   const inputTitle = useRef(null);
   const inputContent = useRef(null);
+
+  const [ previewImg, setPreviewImg]=useState(null)
 
   useEffect(() => {
     dispatch({ type: CHANGE_MENU, menu: '글작성' });
@@ -41,8 +44,48 @@ const Write = memo(({ id, dispatch, history }) => {
     }
   };
 
+  /*이미지 파일 추가 me*/
+  const insertImg = (e) => {
+    //console.log(e.target.files[0])
+    let reader = new FileReader()
+
+  if(e.target.files[0]) {
+    reader.readAsDataURL(e.target.files[0])
+  }
+
+  reader.onloadend = () => {
+    const previewImgUrl = reader.result
+
+    //1
+  	if(previewImgUrl){
+      return setPreviewImg[previewImgUrl]
+     //setPreviewImg[previewImgUrl]
+    }
+
+    
+  }
+  }
+
   return (
+
+    
     <div className="form">
+
+      {/*me*/}
+      {/*<ImgAreaContainer>
+        <ImageArea>
+          <Img src={previewImg ? previewImg : 'http://www.billking.co.kr/index/skin/board/basic_support/img/noimage.gif'} alt='noImg'/>
+        </ImageArea>
+      </ImgAreaContainer>*/}
+
+      
+      <form encType='multipart/form-data'>
+      <label htmlFor='file'>이미지업로드: </label>
+      <input type="file" id='file' accept='image/jpg, image/jpeg, image/png' onChange={(e)=>insertImg(e)} />
+      </form>
+     
+      {/*me*/}
+
       <div className="input-box">
         <h3>제 목: <input
           ref={inputTitle}
@@ -71,3 +114,43 @@ const Write = memo(({ id, dispatch, history }) => {
 });
 
 export default Write;
+
+
+const ImgAreaContainer = styled.div`
+  display: flex;
+  align-items:center;
+`
+const ImageArea = styled.div`
+width: 100px;
+height: 100px;
+display: flex;
+align-items: center;
+margin-bottom: 10px;
+`
+
+const Img=styled.img`
+object-fit:cover;
+width:100%;
+`
+
+const FileInput = styled.input`
+position: absolute;
+width: 1px;
+height: 1px;
+padding: 0;
+margin: -1px;
+padding: 0;
+margin:-1px;
+overflow: hidden;
+clip:rect(0,0,0,0);
+border:none;
+`
+const Label = styled.label`
+display: inline-block;
+color: #fff;
+padding: 10px;
+background: #6a4162;
+cursor: pointer;
+border: 1px solid #ebebeb;
+border-radius:5px;
+`

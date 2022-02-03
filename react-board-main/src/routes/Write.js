@@ -19,8 +19,8 @@ const Write = memo(({ id, dispatch, history }) => {
   const inputTitle = useRef(null);
   const inputContent = useRef(null);
 
-  const [ previewImg, setPreviewImg]= useState(null);
-  const [img, setImg ]= useState('이미지 없음')
+  const [ previewImg, setPreviewImg]= useState([]);
+  const [img, setImg ]= useState([]);
 
 
   useEffect(() => {
@@ -53,6 +53,8 @@ const Write = memo(({ id, dispatch, history }) => {
 
   if(e.target.files[0]) {
     reader.readAsDataURL(e.target.files[0])
+
+    setImg([...img ,e.target.files[0].name]) //그림옆에 이름 나오는것
   }
 
   reader.onloadend = () => {
@@ -60,12 +62,9 @@ const Write = memo(({ id, dispatch, history }) => {
 
     //1
   	if(previewImgUrl){
-      //setPreviewImg[previewImgUrl] //전
-     //setPreviewImg(previewImgUrl)   //후 이미지 한개
-     setPreviewImg([...previewImg, previewImgUrl]) //이미지 여러개
-     //console.log(previewImgUrl,123)
-     setImg(e.target.files[0].name)
-     //그림옆에 이름 나오는것
+      
+     setPreviewImg([...previewImg, previewImgUrl]) 
+   
     }
     
   }
@@ -89,7 +88,8 @@ const getPreviewImg=()=>{
         <ImgName>등록된 이미지가 없습니다.</ImgName>
       </ImgAreaContainer>
     )
-  }else{
+  }
+  else{
     return img.map((el,index)=>{
       const{name}=el
 
@@ -99,7 +99,7 @@ const getPreviewImg=()=>{
             <Img src={previewImg[index]}/>
           </ImgArea>
           <ImgName>{name}</ImgName>
-          <DeletButton onClick={()=>deleteImg(index)}></DeletButton>
+          <DeletButton onClick={()=>deleteImg(index)}>❌</DeletButton>
         </ImgAreaContainer>
       )
     })
@@ -116,14 +116,8 @@ const getPreviewImg=()=>{
 
       
       <MainContainer>
-        {/*<ImgAreaContainer>
-          <ImageArea>
-            <Img src={previewImg ? previewImg : 'http://www.billking.co.kr/index/skin/board/basic_support/img/noimage.gif'} alt='noImg'/>
-          </ImageArea>
-          <ImgName>{img}</ImgName>
-          <DeletButton onClick={deleteImg}>❌</DeletButton>
-        </ImgAreaContainer>
-      */}
+        
+      {getPreviewImg()}
       
         <form encType='multipart/form-data'>
         <label htmlFor='file'>이미지업로드: </label>
@@ -132,7 +126,7 @@ const getPreviewImg=()=>{
       
       </MainContainer>
      
-      {/*me*/}
+
 
       <div className="input-box">
         <h3>제 목: <input
@@ -195,7 +189,7 @@ const ImgArea=styled.div`
 width:100px;
 height:100px;
 display:flex;
-align-items: center;
+align-items: center;  
 margin-bottom:10px;
 `
 

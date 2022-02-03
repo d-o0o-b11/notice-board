@@ -19,7 +19,9 @@ const Write = memo(({ id, dispatch, history }) => {
   const inputTitle = useRef(null);
   const inputContent = useRef(null);
 
-  const [ previewImg, setPreviewImg]=useState(null)
+  const [ previewImg, setPreviewImg]= useState(null);
+  const [img, setImg ]= useState('이미지 없음')
+
 
   useEffect(() => {
     dispatch({ type: CHANGE_MENU, menu: '글작성' });
@@ -46,7 +48,7 @@ const Write = memo(({ id, dispatch, history }) => {
 
   /*이미지 파일 추가 me*/
   const insertImg = (e) => {
-    //console.log(e.target.files[0])
+    //return console.log(e.target.files[0])
     let reader = new FileReader()
 
   if(e.target.files[0]) {
@@ -58,13 +60,52 @@ const Write = memo(({ id, dispatch, history }) => {
 
     //1
   	if(previewImgUrl){
-      return setPreviewImg[previewImgUrl]
-     //setPreviewImg[previewImgUrl]
+      //setPreviewImg[previewImgUrl] //전
+     //setPreviewImg(previewImgUrl)   //후 이미지 한개
+     setPreviewImg([...previewImg, previewImgUrl]) //이미지 여러개
+     //console.log(previewImgUrl,123)
+     setImg(e.target.files[0].name)
+     //그림옆에 이름 나오는것
     }
-
     
   }
+}
+  
+const deleteImg=(index)=>{
+  const imgArr = img.filter((el,idx)=> idx!==index)
+  const imgNameArr = previewImg.filter((el,idx)=>idx!==index)
+
+  setImg([...imgArr])
+  setPreviewImg([...imgNameArr])
+}
+
+const getPreviewImg=()=>{
+  if(img===null || img.length===0){
+    return(
+      <ImgAreaContainer>
+        <ImgArea>
+          <Img src='http://www.billking.co.kr/index/skin/board/basic_support/img/noimage.gif' alt='noImg'/>
+        </ImgArea>
+        <ImgName>등록된 이미지가 없습니다.</ImgName>
+      </ImgAreaContainer>
+    )
+  }else{
+    return img.map((el,index)=>{
+      const{name}=el
+
+      return(
+        <ImgAreaContainer key={index}>
+          <ImgArea>
+            <Img src={previewImg[index]}/>
+          </ImgArea>
+          <ImgName>{name}</ImgName>
+          <DeletButton onClick={()=>deleteImg(index)}></DeletButton>
+        </ImgAreaContainer>
+      )
+    })
   }
+}
+
 
   return (
 
@@ -72,17 +113,24 @@ const Write = memo(({ id, dispatch, history }) => {
     <div className="form">
 
       {/*me*/}
-      {/*<ImgAreaContainer>
-        <ImageArea>
-          <Img src={previewImg ? previewImg : 'http://www.billking.co.kr/index/skin/board/basic_support/img/noimage.gif'} alt='noImg'/>
-        </ImageArea>
-      </ImgAreaContainer>*/}
 
       
-      <form encType='multipart/form-data'>
-      <label htmlFor='file'>이미지업로드: </label>
-      <input type="file" id='file' accept='image/jpg, image/jpeg, image/png' onChange={(e)=>insertImg(e)} />
-      </form>
+      <MainContainer>
+        {/*<ImgAreaContainer>
+          <ImageArea>
+            <Img src={previewImg ? previewImg : 'http://www.billking.co.kr/index/skin/board/basic_support/img/noimage.gif'} alt='noImg'/>
+          </ImageArea>
+          <ImgName>{img}</ImgName>
+          <DeletButton onClick={deleteImg}>❌</DeletButton>
+        </ImgAreaContainer>
+      */}
+      
+        <form encType='multipart/form-data'>
+        <label htmlFor='file'>이미지업로드: </label>
+        <input type="file" id='file' accept='image/jpg, image/jpeg, image/png' onChange={(e)=>insertImg(e)} />
+        </form>
+      
+      </MainContainer>
      
       {/*me*/}
 
@@ -115,6 +163,21 @@ const Write = memo(({ id, dispatch, history }) => {
 
 export default Write;
 
+const MainContainer = styled.div`
+display:flex;
+justify-content: center;
+flex-direction:column;
+align-items: center;
+margin-top:20px;
+
+  @media(max-width:400px){
+    width:100%;
+    max-width: 400px;
+    justify-content:start;
+    flex-wrap:wrap;
+  }
+`
+
 
 const ImgAreaContainer = styled.div`
   display: flex;
@@ -127,6 +190,15 @@ display: flex;
 align-items: center;
 margin-bottom: 10px;
 `
+
+const ImgArea=styled.div`
+width:100px;
+height:100px;
+display:flex;
+align-items: center;
+margin-bottom:10px;
+`
+
 
 const Img=styled.img`
 object-fit:cover;
@@ -153,4 +225,22 @@ background: #6a4162;
 cursor: pointer;
 border: 1px solid #ebebeb;
 border-radius:5px;
+`
+
+{/*me*/}
+
+const ImgName = styled.div`
+width: 100px;
+height: 100px;
+display: flex;
+align-items: center;
+margin-bottom: 10px;
+`
+
+const DeletButton = styled.div`
+width: 100px;
+height: 100px;
+display: flex;
+align-items: center;
+margin-bottom: 10px;
 `

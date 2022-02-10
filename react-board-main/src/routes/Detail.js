@@ -21,8 +21,6 @@ const Detail = memo(({ dispatch, match, history }) => {
     alert("글 작성이 취소됩니다");
   }, [dispatch, history, item]);
 
-  
-
   return (
     <>
       {item ? (

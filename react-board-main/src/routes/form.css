@@ -98,3 +98,11 @@ h3 {
   margin-left: 20px;
   font-family: "Jua", Georgia, "Times New Roman";
 }
+
+.output {
+  align-items: center;
+}
+
+.error {
+  align-items: center;
+}

@@ -5,6 +5,8 @@ import { ADD_ITEM, CHANGE_MENU } from '../reducers/boardReducer';
 import './form.css';
 import styled from 'styled-components'
 
+
+
 function formatDate(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -15,31 +17,63 @@ function formatDate(date) {
 const Write = memo(({ id, dispatch, history }) => {
   const item = {};
   const [state, onChangeInput] = useInputs({ title: '', content: '' });
-  const { title, content } = state;
+  const { title, content } = state;  //imgcheck추가
   const inputTitle = useRef(null);
   const inputContent = useRef(null);
 
-  const [ previewImg, setPreviewImg]= useState([]);
-  const [img, setImg ]= useState([]);
+  const inputImg = useRef(null);
+  //이미지 값 받아오기
 
+  const[file, setFile] = useState(null);
+
+
+  const [ previewImg, setPreviewImg]= useState([]);
+ 
+  const [img, setImg ]= useState([]);
+  const types = ['image/png', 'image/jpeg'];
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     dispatch({ type: CHANGE_MENU, menu: '글작성' });
     inputTitle.current.focus();
   }, [dispatch]);
 
+
+
+  const changeHandler=(e)=>{
+  
+
+    let selected = e.target.files[0];
+  
+    if(selected && types.includes(selected.type)){
+      setFile(selected);
+      console.log(selected);
+      setError('');
+    }else{
+      setFile(null);
+      setError('Please select an image file (png or jpeg)');
+    }
+  }
+
+
+
   const onClickSubmit = () => {
+
+    const formData = new FormData();
+
     if (!title) {
       alert('Please enter a title.');
       inputTitle.current.focus();
     } else if (!content) {
       alert('Please enter the content.');
       inputContent.current.focus();
-    } else {
+    }else {
       item.id = id;
       item.title = title;
       item.content = content;
+      //item.imgcheck = getPreviewImg();  //추가
       item.date = formatDate(new Date());
+
       item.views = 0;
       dispatch({ type: ADD_ITEM, item });
       history.push(`/detail/${item.id}`);
@@ -47,7 +81,7 @@ const Write = memo(({ id, dispatch, history }) => {
   };
 
   /*이미지 파일 추가 me*/
-  const insertImg = (e) => {
+   const insertImg = (e) => {
     //return console.log(e.target.files[0])
     let reader = new FileReader()
 
@@ -69,8 +103,11 @@ const Write = memo(({ id, dispatch, history }) => {
     
   }
 }
+
+
+
   
-const deleteImg=(index)=>{
+ const deleteImg=(index)=>{
   const imgArr = img.filter((el,idx)=> idx!==index)
   const imgNameArr = previewImg.filter((el,idx)=>idx!==index)
 
@@ -78,7 +115,7 @@ const deleteImg=(index)=>{
   setPreviewImg([...imgNameArr])
 }
 
-const getPreviewImg=()=>{
+ const getPreviewImg=()=>{
   if(img===null || img.length===0){
     return(
       <ImgAreaContainer>
@@ -121,7 +158,20 @@ const getPreviewImg=()=>{
       
         <form encType='multipart/form-data'>
         <label htmlFor='file'>이미지업로드: </label>
-        <input type="file" id='file' accept='image/jpg, image/jpeg, image/png' onChange={(e)=>insertImg(e)} />
+        <input 
+
+          type="file" 
+          id='file' 
+          //accept='image/jpg, image/jpeg, image/png' 
+          onChange={(e)=>insertImg(e)} 
+          style={{display: "none"}}
+        />
+        <div className='output'>
+          {error && <div className='error'>{error}</div>}
+          {file && <div>{file.name}</div>}
+        </div>
+
+
         </form>
       
       </MainContainer>

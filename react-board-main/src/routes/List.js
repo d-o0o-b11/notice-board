@@ -3,6 +3,7 @@ import { CHANGE_MENU } from '../reducers/boardReducer';
 import ListItem from '../components/ListItem';
 import './List.css';
 
+
 const List = memo(({ list, dispatch }) => {
   useEffect(() => {
     dispatch({ type: CHANGE_MENU, menu: 'List' });

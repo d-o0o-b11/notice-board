@@ -1,0 +1,62 @@
+.step {
+  background-color: #f5f5f5;
+  border: #e5e5e5 solid 1px;
+  border-radius: 4px;
+  height: 200px;
+  width: 600px;
+  padding-left: 15px;
+  padding-top: 10px;
+  resize: none;
+  text-decoration: none;
+}
+
+.step::placeholder {
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 17px;
+  color: rgb(170, 170, 170);
+}
+
+.lalabel {
+  margin: 50px 30px 0px 50px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+.choose {
+  position: absolute;
+  top: 1100px;
+  left: 1150px;
+}
+
+.ImgName {
+  position: absolute;
+  top: 100px;
+  left: 150px;
+}
+
+.DeleteButton {
+  position: absolute;
+  top: 150px;
+  left: 200px;
+}
+
+.touch {
+  width: 250px;
+  height: 250px;
+  border-radius: 10px;
+  position: absolute;
+  top: 300px;
+  left: 1090px;
+  z-index: 999;
+}
+
+.writeImg {
+  width: 250px;
+  height: 250px;
+  border-radius: 10px;
+  object-fit: cover;
+  position: absolute;
+  top: 300px;
+  left: 1090px;
+}

@@ -1,0 +1,27 @@
+.container {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.container li {
+  list-style: none;
+  border: 1px solid #828282;
+}
+
+.pagination li {
+  display: inline-block;
+  background: #dedede;
+  overflow: hidden;
+}
+
+.pagination li a {
+  text-decoration: none;
+  width: 10px;
+  height: 10px;
+  padding: 10px;
+}
+
+.pagination li a:focus {
+  background-color: yellow;
+}
